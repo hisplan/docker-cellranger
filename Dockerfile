@@ -16,4 +16,16 @@ RUN curl -o cellranger-${CELLRANGER_VERSION}.tar.gz "http://cf.10xgenomics.com/r
     && rm -rf cellranger-${CELLRANGER_VERSION}.tar.gz \
     && mv cellranger-${CELLRANGER_VERSION} /opt/
 
+# human reference
+RUN curl -O http://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-${CELLRANGER_VERSION}.tar.gz \
+    && tar xzf refdata-cellranger-vdj-GRCh38-alts-ensembl-${CELLRANGER_VERSION}.tar.gz \
+    && rm -rf refdata-cellranger-vdj-GRCh38-alts-ensembl-${CELLRANGER_VERSION}.tar.gz \
+    && mv refdata-cellranger-vdj-GRCh38-alts-ensembl-${CELLRANGER_VERSION} /opt/
+
+# # mouse reference
+RUN curl -O http://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCm38-alts-ensembl-${CELLRANGER_VERSION}.tar.gz \
+    && tar xzf refdata-cellranger-vdj-GRCm38-alts-ensembl-${CELLRANGER_VERSION}.tar.gz \
+    && rm -rf refdata-cellranger-vdj-GRCm38-alts-ensembl-${CELLRANGER_VERSION}.tar.gz \
+    && mv refdata-cellranger-vdj-GRCm38-alts-ensembl-${CELLRANGER_VERSION} /opt/
+
 WORKDIR /opt
