@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t cellranger:3.1.0 .
+docker build -t cellranger:4.0.0 .
