@@ -30,4 +30,4 @@ RUN curl -O https://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCm
 
 WORKDIR /opt
 
-ENTRYPOINT [ "cellranger" ]
+# ENTRYPOINT [ "cellranger" ]
