@@ -1,6 +1,6 @@
 # docker-cellranger
 
-Dockerized Cell Ranger v6.0.0
+Dockerized Cell Ranger v6.0.1
 
 - GEX: https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/6.0/
 - VDJ: https://support.10xgenomics.com/single-cell-vdj/software/downloads/6.0/
