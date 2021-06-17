@@ -1,9 +1,9 @@
 # docker-cellranger
 
-Dockerized Cell Ranger v4.0.0
+Dockerized Cell Ranger v6.0.0
 
-- GEX: https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/4.0
-- VDJ: https://support.10xgenomics.com/single-cell-vdj/software/downloads/4.0
+- GEX: https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/6.0/
+- VDJ: https://support.10xgenomics.com/single-cell-vdj/software/downloads/6.0/
 
 Reference dataset included:
 
@@ -12,7 +12,7 @@ Reference dataset included:
 
 ```bash
 $ cellranger --help
-cellranger 4.0.0
+cellranger cellranger-6.0.1
 Process 10x Genomics Gene Expression, Feature Barcode, and Immune Profiling data
 
 USAGE:
@@ -23,20 +23,24 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
-    count               Count gene expression and feature barcoding reads from a single sample and GEM well
+    count               Count gene expression (targeted or whole-transcriptome) and/or feature barcode reads from a
+                        single sample and GEM well
+    multi               Analyze multiplexed data or combined gene expression/immune profiling/feature barcode data
     vdj                 Assembles single-cell VDJ receptor sequences from 10x Immune Profiling libraries
     aggr                Aggregate data from multiple Cell Ranger runs
     reanalyze           Re-run secondary analysis (dimensionality reduction, clustering, etc)
-    targeted-compare    Analyze targeted enrichment performance by comparing a targeted sample to its cognate parent WTA sample (used as input for targeted gene expression)
-    targeted-depth      Estimate targeted read depth values (mean reads per cell) for a specified input parent WTA sample and a target panel CSV file
+    targeted-compare    Analyze targeted enrichment performance by comparing a targeted sample to its cognate parent
+                        WTA sample (used as input for targeted gene expression)
+    targeted-depth      Estimate targeted read depth values (mean reads per cell) for a specified input parent WTA
+                        sample and a target panel CSV file
     mkvdjref            Prepare a reference for use with CellRanger VDJ
     mkfastq             Run Illumina demultiplexer on sample sheets that contain 10x-specific sample index sets
     testrun             Execute the 'count' pipeline on a small test dataset
     mat2csv             Convert a gene count matrix to CSV format
-    mkgtf               Prepare a GTF file for use as a 10x transcriptome reference
     mkref               Prepare a reference for use with 10x analysis software. Requires a GTF and FASTA
-    upload              Upload a summary of an analysis pipeline job to 10x Genomics support
-    sitecheck           Collect Linux system configuration information
+    mkgtf               Filter a GTF file by attribute prior to creating a 10x reference
+    upload              Upload analysis logs to 10x Genomics support
+    sitecheck           Collect linux system configuration information
     help                Prints this message or the help of the given subcommand(s)
 ```
 
@@ -45,49 +49,63 @@ SUBCOMMANDS:
 ```bash
 $ cellranger count --help
 cellranger-count
-Count gene expression and feature barcoding reads from a single sample and GEM well
+Count gene expression (targeted or whole-transcriptome) and/or feature barcode reads from a single sample and GEM well
 
 USAGE:
     cellranger count [FLAGS] [OPTIONS] --id <ID> --transcriptome <PATH>
 
 FLAGS:
-        --no-target-umi-filter    Turn off the target UMI filtering subpipeline
+        --no-bam                  Do not generate a bam file
         --nosecondary             Disable secondary analysis, e.g. clustering. Optional
-        --no-libraries            Proceed with processing using a --feature-ref but no Feature Barcode libraries specified with the 'libraries' flag
+        --include-introns         Include intronic reads in count
+        --no-libraries            Proceed with processing using a --feature-ref but no Feature Barcode libraries
+                                  specified with the 'libraries' flag
+        --no-target-umi-filter    Turn off the target UMI filtering subpipeline. Only applies when --target-panel is
+                                  used
         --dry                     Do not execute the pipeline. Generate a pipeline invocation (.mro) file and stop
-        --disable-ui              Do not serve the UI
+        --disable-ui              Do not serve the web UI
         --noexit                  Keep web UI running after pipestance completes or fails
         --nopreflight             Skip preflight checks
     -h, --help                    Prints help information
 
 OPTIONS:
         --id <ID>                 A unique run id and output folder name [a-zA-Z0-9_-]+
-        --description <TEXT>      Sample description to embed in output files
+        --description <TEXT>      Sample description to embed in output files [default: ]
         --transcriptome <PATH>    Path of folder containing 10x-compatible transcriptome reference
-    -f, --fastqs <PATH>...        Path to input FASTQ data
-    -p, --project <TEXT>          Name of the project folder within a mkfastq or bcl2fastq-generated folder to pick FASTQs from
-    -s, --sample <PREFIX>...      Prefix of the filenames of FASTQs to select
+        --fastqs <PATH>...        Path to input FASTQ data
+        --project <TEXT>          Name of the project folder within a mkfastq or bcl2fastq-generated folder to pick
+                                  FASTQs from
+        --sample <PREFIX>...      Prefix of the filenames of FASTQs to select
         --lanes <NUMS>...         Only use FASTQs from selected lanes
         --libraries <CSV>         CSV file declaring input library data sources
-        --feature-ref <CSV>       Feature reference CSV file, declaring Feature Barcode constructs and associated barcodes
+        --feature-ref <CSV>       Feature reference CSV file, declaring Feature Barcode constructs and associated
+                                  barcodes
         --target-panel <CSV>      The target panel CSV file declaring the target panel used, if any
         --expect-cells <NUM>      Expected number of recovered cells
-        --force-cells <NUM>       Force pipeline to use this number of cells, bypassing cell detection
+        --force-cells <NUM>       Force pipeline to use this number of cells, bypassing cell detection. [MINIMUM: 10]
         --r1-length <NUM>         Hard trim the input Read 1 to this length before analysis
         --r2-length <NUM>         Hard trim the input Read 2 to this length before analysis
-        --chemistry <CHEM>        Assay configuration. NOTE: by default the assay configuration is detected automatically, which is the recommened mode. You usually will not need to specify a chemistry. Options are: 'auto'
-                                  for autodetection, 'threeprime' for Single Cell 3', 'fiveprime' for  Single Cell 5', 'SC3Pv1' or 'SC3Pv2' or 'SC3Pv3' for Single Cell 3' v1/v2/v3, 'SC5P-PE' or 'SC5P-R2' for Single Cell 5',
-                                  paired-end/R2-only, 'SC-FB' for Single Cell Antibody-only 3' v2 or 5' [default: auto]
-        --jobmode <MODE>          Job manager to use. Valid options: local (default), sge, lsf, slurm or a .template file. Search for help on "Cluster Mode" at support.10xgenomics.com for more details on configuring the
-                                  pipeline to use a compute cluster [default: local]
+        --chemistry <CHEM>        Assay configuration. NOTE: by default the assay configuration is detected
+                                  automatically, which is the recommened mode. You usually will not need to specify a
+                                  chemistry. Options are: 'auto' for autodetection, 'threeprime' for Single Cell 3',
+                                  'fiveprime' for  Single Cell 5', 'SC3Pv1' or 'SC3Pv2' or 'SC3Pv3' for Single Cell 3'
+                                  v1/v2/v3, 'SC3Pv3LT' for Single Cell 3' v3 LT, 'SC5P-PE' or 'SC5P-R2' for Single Cell
+                                  5', paired-end/R2-only, 'SC-FB' for Single Cell Antibody-only 3' v2 or 5' [default:
+                                  auto]
+        --jobmode <MODE>          Job manager to use. Valid options: local (default), sge, lsf, slurm or a .template
+                                  file. Search for help on "Cluster Mode" at support.10xgenomics.com for more details on
+                                  configuring the pipeline to use a compute cluster [default: local]
         --localcores <NUM>        Set max cores the pipeline may request at one time. Only applies to local jobs
         --localmem <NUM>          Set max GB the pipeline may request at one time. Only applies to local jobs
         --localvmem <NUM>         Set max virtual address space in GB for the pipeline. Only applies to local jobs
-        --mempercore <NUM>        Reserve enough threads for each job to ensure enough memory will be available, assuming each core on your cluster has at least this much memory available. Only applies in cluster jobmodes
+        --mempercore <NUM>        Reserve enough threads for each job to ensure enough memory will be available,
+                                  assuming each core on your cluster has at least this much memory available. Only
+                                  applies in cluster jobmodes
         --maxjobs <NUM>           Set max jobs submitted to cluster at one time. Only applies in cluster jobmodes
         --jobinterval <NUM>       Set delay between submitting jobs to cluster, in ms. Only applies in cluster jobmodes
-        --overrides <PATH>        The path to a JSON file that specifies stage-level overrides for cores and memory. Finer-grained than --localcores, --mempercore and --localmem. Consult the 10x support website for an example
-                                  override file
+        --overrides <PATH>        The path to a JSON file that specifies stage-level overrides for cores and memory.
+                                  Finer-grained than --localcores, --mempercore and --localmem. Consult the 10x support
+                                  website for an example override file
         --uiport <PORT>           Serve web UI at http://localhost:PORT
 ```
 
@@ -104,7 +122,7 @@ USAGE:
 FLAGS:
         --denovo         Run in reference-free mode (do not use annotations)
         --dry            Do not execute the pipeline. Generate a pipeline invocation (.mro) file and stop
-        --disable-ui     Do not serve the UI
+        --disable-ui     Do not serve the web UI
         --noexit         Keep web UI running after pipestance completes or fails
         --nopreflight    Skip preflight checks
     -h, --help           Prints help information
@@ -112,25 +130,36 @@ FLAGS:
 OPTIONS:
         --id <ID>                            A unique run id and output folder name [a-zA-Z0-9_-]+
         --description <TEXT>                 Sample description to embed in output files [default: ]
-        --reference <PATH>                   Path of folder containing 10x-compatible VDJ reference. Optional if '--denovo' is specified
-    -f, --fastqs <PATH>...                   Path to input FASTQ data
-    -p, --project <TEXT>                     Name of the project folder within a mkfastq or bcl2fastq-generated folder to pick FASTQs from
-    -s, --sample <PREFIX>...                 Prefix of the filenames of FASTQs to select
+        --reference <PATH>                   Path of folder containing 10x-compatible VDJ reference. Optional if
+                                             '--denovo' is specified
+        --fastqs <PATH>...                   Path to input FASTQ data
+        --project <TEXT>                     Name of the project folder within a mkfastq or bcl2fastq-generated folder
+                                             to pick FASTQs from
+        --sample <PREFIX>...                 Prefix of the filenames of FASTQs to select
         --lanes <NUMS>...                    Only use FASTQs from selected lanes
-        --chain <CHAIN_SPEC>                 Chain type to display metrics for: 'TR' for T cell receptors, 'IG' for B cell receptors, or 'auto' to autodetect [default: auto]
-        --force-cells <NUM>                  Force pipeline to use this number of cells, bypassing cell detection
-        --inner-enrichment-primers <PATH>    If inner enrichment primers other than those provided in the 10x kits are used, they need to be specified here as a textfile with one primer per line. Disable secondary analysis,
-                                             e.g. clustering
-        --jobmode <MODE>                     Job manager to use. Valid options: local (default), sge, lsf, slurm or a .template file. Search for help on "Cluster Mode" at support.10xgenomics.com for more details on
-                                             configuring the pipeline to use a compute cluster [default: local]
-        --localcores <NUM>                   Set max cores the pipeline may request at one time. Only applies to local jobs
+        --chain <CHAIN_SPEC>                 Chain type to display metrics for: 'TR' for T cell receptors, 'IG' for B
+                                             cell receptors, or 'auto' to autodetect [default: auto]
+        --inner-enrichment-primers <PATH>    If inner enrichment primers other than those provided in the 10x kits are
+                                             used, they need to be specified here as a textfile with one primer per
+                                             line. Disable secondary analysis, e.g. clustering
+        --jobmode <MODE>                     Job manager to use. Valid options: local (default), sge, lsf, slurm or a
+                                             .template file. Search for help on "Cluster Mode" at
+                                             support.10xgenomics.com for more details on configuring the pipeline to use
+                                             a compute cluster [default: local]
+        --localcores <NUM>                   Set max cores the pipeline may request at one time. Only applies to local
+                                             jobs
         --localmem <NUM>                     Set max GB the pipeline may request at one time. Only applies to local jobs
-        --localvmem <NUM>                    Set max virtual address space in GB for the pipeline. Only applies to local jobs
-        --mempercore <NUM>                   Reserve enough threads for each job to ensure enough memory will be available, assuming each core on your cluster has at least this much memory available. Only applies in cluster
+        --localvmem <NUM>                    Set max virtual address space in GB for the pipeline. Only applies to local
+                                             jobs
+        --mempercore <NUM>                   Reserve enough threads for each job to ensure enough memory will be
+                                             available, assuming each core on your cluster has at least this much memory
+                                             available. Only applies in cluster jobmodes
+        --maxjobs <NUM>                      Set max jobs submitted to cluster at one time. Only applies in cluster
                                              jobmodes
-        --maxjobs <NUM>                      Set max jobs submitted to cluster at one time. Only applies in cluster jobmodes
-        --jobinterval <NUM>                  Set delay between submitting jobs to cluster, in ms. Only applies in cluster jobmodes
-        --overrides <PATH>                   The path to a JSON file that specifies stage-level overrides for cores and memory. Finer-grained than --localcores, --mempercore and --localmem. Consult the 10x support website for
-                                             an example override file
+        --jobinterval <NUM>                  Set delay between submitting jobs to cluster, in ms. Only applies in
+                                             cluster jobmodes
+        --overrides <PATH>                   The path to a JSON file that specifies stage-level overrides for cores and
+                                             memory. Finer-grained than --localcores, --mempercore and --localmem.
+                                             Consult the 10x support website for an example override file
         --uiport <PORT>                      Serve web UI at http://localhost:PORT
 ```
