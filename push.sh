@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source version.sh
+
 docker login
-docker tag cellranger:4.0.0 hisplan/cellranger:4.0.0
-docker push hisplan/cellranger:4.0.0
+docker tag cellranger:${version} hisplan/cellranger:${version}
+docker push hisplan/cellranger:${version}
