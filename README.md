@@ -1,6 +1,6 @@
 # docker-cellranger
 
-Dockerized Cell Ranger v6.0.1
+Dockerized Cell Ranger v6.0.2
 
 - GEX: https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/6.0/
 - VDJ: https://support.10xgenomics.com/single-cell-vdj/software/downloads/6.0/
@@ -12,7 +12,7 @@ Reference dataset included:
 
 ```bash
 $ cellranger --help
-cellranger cellranger-6.0.1
+cellranger cellranger-6.0.2
 Process 10x Genomics Gene Expression, Feature Barcode, and Immune Profiling data
 
 USAGE:

@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL maintainer="Jaeyoung Chun (chunj@mskcc.org)"
 
-ENV CELLRANGER_VERSION 6.0.1
+ENV CELLRANGER_VERSION 6.0.2
 ENV REFERENCE_VERSION 5.0.0
 ENV PATH /opt/cellranger-${CELLRANGER_VERSION}:$PATH
 
@@ -11,7 +11,7 @@ RUN yum group install -y "Development Tools" \
 
 # https://support.10xgenomics.com/single-cell-vdj/software/downloads/6.0/
 # cell ranger binaries
-RUN curl -o cellranger-6.0.1.tar.gz "https://cf.10xgenomics.com/releases/cell-vdj/cellranger-6.0.1.tar.gz?Expires=1623924083&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jZi4xMHhnZW5vbWljcy5jb20vcmVsZWFzZXMvY2VsbC12ZGovY2VsbHJhbmdlci02LjAuMS50YXIuZ3oiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE2MjM5MjQwODN9fX1dfQ__&Signature=KSThqjJ0iQvWpXk17vlscq3BBgEYSH~DWtHqGEN73MMC1E4Z-4JPfJ1jiL9nBX0DSj-3bLNFo2pIk8a3krlIaWzNVZkbATXQ3hgab8JY8YR~6jitfiL85E1BRH200nhLZwYIzwgH5~3CqRSkWwS0d88xXYE~TZQBkKS6K8Yr05OFL2tRD3zYRqwo8xxMJQEMVuX2DeO~6~H~2uqzlP~RQc-CnUyKw2dMFLkATYf3h0JL2dOu2hKYV2eqhO5K~-do3KpKRlHPdgDq9gfYILhNv6qAYjiBnio5LuboKe4dP9Mdx7Xl9SsEXtZG19bXFm1~4MG7UktTkMNHg1smtER-wg__&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA" \
+RUN curl -o cellranger-6.0.2.tar.gz "https://cf.10xgenomics.com/releases/cell-vdj/cellranger-6.0.2.tar.gz?Expires=1624326738&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jZi4xMHhnZW5vbWljcy5jb20vcmVsZWFzZXMvY2VsbC12ZGovY2VsbHJhbmdlci02LjAuMi50YXIuZ3oiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE2MjQzMjY3Mzh9fX1dfQ__&Signature=YoUQCQZdnkU9LkVOpBTQIVuQjcAxB5nTAeYSg1cF2vwVL5q7dZhn2h9UZ5GQrgWRM-wALHMDhvxOcHr1xAxQ6r7yCxAySzciXILdnnzC71Uc2fMDzAYa-FTtoGKjQwTBjgCPVYsPhE1TxiSNQ9lPBGLWK28XKRmv0gDOxa1zanLvq-alpkaM1RRPROYYtfzpOc7v2jysPyvlFrP0TFMZ4gpHggZ~II4uWg~IHRLW6znaf55bq-QSk2K1GVePZq0~tKRfalVx2-8QNF4ucz4pMpIO6qGf-vE-qSv~UWAcqnw6B~mqjX075p84YNdyK-DZF5~D62nXrOp5aBKFYkHS7Q__&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA" \
     && tar xzf cellranger-${CELLRANGER_VERSION}.tar.gz \
     && rm -rf cellranger-${CELLRANGER_VERSION}.tar.gz \
     && mv cellranger-${CELLRANGER_VERSION} /opt/
