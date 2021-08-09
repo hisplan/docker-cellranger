@@ -10,6 +10,35 @@ Reference dataset included:
 - Human reference dataset (GRCh38/Ensembl/10x) required for Cell Ranger V(D)J
 - Mouse reference dataset (GRCm38/Ensembl/10x) required for Cell Ranger V(D)J
 
+
+## Build Container Image
+
+```bash
+./build.sh
+```
+
+`build.sh` can fail if the download link has expired (10x expires the Cell Ranger download link periodically). In this case, get the fresh link from https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/6.0/, and open `config.sh` and replace `${FRESH_LINK}` with the new link:
+
+```
+version="6.0.2"
+vdj_ref_version="5.0"
+download_url="${FRESH_LINK}"
+
+# docker related
+registry="quay.io/hisplan"
+image_name="cellranger"
+```
+
+## Push to Docker Registry
+
+Either you can use the `docker push` command or run `push.sh` (requires [SCING](https://github.com/hisplan/scing)):
+
+```bash
+./push.sh
+```
+
+## Usage
+
 ```bash
 $ cellranger --help
 cellranger cellranger-6.0.2

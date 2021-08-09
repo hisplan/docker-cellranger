@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/bash -e
 
-source version.sh
+source config.sh
 
-docker login
-docker tag cellranger:${version} hisplan/cellranger:${version}
-docker push hisplan/cellranger:${version}
+echo "${registry}/${image_name}:${version}"
+
+scing push --image=${registry}/${image_name}:${version}
+scing push --image=${registry}/cromwell-${image_name}:${version}

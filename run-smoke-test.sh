@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/bash -e
 
-source version.sh
+source config.sh
 
 # cellranger
 docker run -it --rm \
