@@ -1,6 +1,7 @@
 version="6.0.2"
 vdj_ref_version="5.0.0"
-download_url="https://cf.10xgenomics.com/releases/cell-exp/cellranger-6.0.2.tar.gz?Expires=1628576161&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jZi4xMHhnZW5vbWljcy5jb20vcmVsZWFzZXMvY2VsbC1leHAvY2VsbHJhbmdlci02LjAuMi50YXIuZ3oiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE2Mjg1NzYxNjF9fX1dfQ__&Signature=c4jpVDQb~oCKL~sUJvvhuOLTc1OwAK~g3JXeRFqXVhM9VXK4lXPGXUxAkUWsHZzZD2QAiONH4j2lNK44yFJaTqMNp1gzzWmsRXW-0HoSDZyxm4n9ikxVZgptXTSbSsMac7D7U71G0PPvc4v2M5cgHg-TJg7N2lVmw3QfVQkHC50rI60DL1VYxB-KMMjJ69xse5BlSsLfyKSRQQ9P-QhwMmluZIMVhWvcMSWKAqFmrth9trqtYkchXXX9~mxsAlYZJymaKRRoYJbJT~ctInx0jBmPz7EbUjLMdXhaeUQl2Uy~C9QH43ZvhAWb4~aphr6Iv8uYQw3wp7GoirURUII24A__&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA"
+site_url="https://support.10xgenomics.com/single-cell-vdj/software/downloads/6.0/"
+download_url=""
 
 # docker related
 registry="quay.io/hisplan"

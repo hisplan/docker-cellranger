@@ -1,7 +1,26 @@
-#!/bin/bash -e
+#!/bin/bash
 
 source config.sh
 
+# get download url for Cell Ranger
+if [ ! -n "$download_url" ]
+then
+    if [ ! -x "$(command -v scing)" ]
+    then
+        echo "Please install SCING CLI (https://github.com/hisplan/scing)."
+        exit 1
+    fi
+
+    out=`scing --no-logo download --site-url ${site_url}`
+    if [ $? != 0 ]
+    then
+        echo "$out"
+        exit 1
+    fi
+    download_url=$out
+fi
+
+# build ${image_name}:${version}
 docker build \
     --tag ${image_name}:${version} \
     --build-arg DOWNLOAD_URL=${download_url} \
@@ -15,7 +34,7 @@ cat Dockerfile \
     | sed 's/^ENTRYPOINT \[/# ENTRYPOINT \[/g' \
     | sed 's/^CMD \[/# CMD \[/g' > Dockerfile.cromwell
 
-# build it
+# build cromwell-${image_name}:${version}
 docker build \
     --tag cromwell-${image_name}:${version} \
     --build-arg DOWNLOAD_URL=${download_url} \
