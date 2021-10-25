@@ -10,7 +10,6 @@ ENV PATH /opt/cellranger-${CELLRANGER_VERSION}:$PATH
 RUN yum group install -y "Development Tools" \
     && yum install -y which
 
-# https://support.10xgenomics.com/single-cell-vdj/software/downloads/6.0/
 # cell ranger binaries
 RUN curl -o cellranger-${CELLRANGER_VERSION}.tar.gz ${DOWNLOAD_URL} \
     && tar xzf cellranger-${CELLRANGER_VERSION}.tar.gz \
