@@ -16,13 +16,13 @@ RUN curl -o cellranger-${CELLRANGER_VERSION}.tar.gz ${DOWNLOAD_URL} \
     && rm -rf cellranger-${CELLRANGER_VERSION}.tar.gz \
     && mv cellranger-${CELLRANGER_VERSION} /opt/
 
-# V(D)J GRCh38 Reference - 5.0.0 (November 19, 2020)
+# V(D)J GRCh38 Reference - 7.0.0 (May 17, 2022)
 RUN curl -O https://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-${VDJ_REFERENCE_VERSION}.tar.gz \
     && tar xzf refdata-cellranger-vdj-GRCh38-alts-ensembl-${VDJ_REFERENCE_VERSION}.tar.gz \
     && rm -rf refdata-cellranger-vdj-GRCh38-alts-ensembl-${VDJ_REFERENCE_VERSION}.tar.gz \
     && mv refdata-cellranger-vdj-GRCh38-alts-ensembl-${VDJ_REFERENCE_VERSION} /opt/
 
-# V(D)J GRCm38 Reference - 5.0.0 (November 19, 2020)
+# V(D)J GRCm38 Reference - 7.0.0 (May 17, 2022)
 RUN curl -O https://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCm38-alts-ensembl-${VDJ_REFERENCE_VERSION}.tar.gz \
     && tar xzf refdata-cellranger-vdj-GRCm38-alts-ensembl-${VDJ_REFERENCE_VERSION}.tar.gz \
     && rm -rf refdata-cellranger-vdj-GRCm38-alts-ensembl-${VDJ_REFERENCE_VERSION}.tar.gz \
